@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملف غير موجود - Read & Burn</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        .icon {
+            font-size: 8rem;
+            margin-bottom: 2rem;
+            animation: burn 2s ease-in-out infinite;
+        }
+        @keyframes burn {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .message {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+        .message p {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: #e2e8f0;
+        }
+        .reasons {
+            text-align: right;
+            margin-top: 1rem;
+            padding-right: 1.5rem;
+        }
+        .reasons li {
+            margin-bottom: 0.5rem;
+            color: #cbd5e1;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.875rem 2rem;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+        .secondary {
+            background: rgba(255, 255, 255, 0.1);
+            margin-left: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🔥</div>
+        
+        <h1>تم حرق الملف</h1>
+        
+        <div class="message">
+            <p>هذا الملف غير متوفر حالياً.</p>
+            
+            <ul class="reasons">
+                <li>تم حرق الملف بالكامل</li>
+                <li>انتهت صلاحية الرابط (ساعة واحدة)</li>
+                <li>تم حذف الملف يدوياً</li>
+                <li>الرابط غير صحيح</li>
+            </ul>
+        </div>
+
+        <div>
+            <a href="/" class="btn">رفع ملف جديد</a>
+        </div>
+    </div>
+</body>
+</html>
