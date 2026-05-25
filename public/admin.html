@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Read & Burn</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            color: #1e293b;
+        }
+        .stat-card h3 {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4f46e5;
+        }
+        .uploads-list {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            color: #1e293b;
+        }
+        .upload-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto auto;
+            gap: 1rem;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .upload-item:last-child {
+            border-bottom: none;
+        }
+        .upload-item .icon {
+            font-size: 2rem;
+        }
+        .upload-item .info h4 {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        .upload-item .info p {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        .upload-item .time {
+            text-align: left;
+        }
+        .upload-item .time .progress {
+            width: 150px;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        .upload-item .time .progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            transition: width 0.3s ease;
+        }
+        .upload-item .time .time-left {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        .upload-item .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .btn {
+            padding: 0.5rem 1rem;
+            font-family: 'Tajawal', sans-serif;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-primary {
+            background: #4f46e5;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #4338ca;
+        }
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #64748b;
+        }
+        .empty-state .icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .badge-image {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .badge-text {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .badge-other {
+            background: #e2e8f0;
+            color: #475569;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔥 لوحة التحكم</h1>
+            <div class="header-actions">
+                <button onclick="loadUploads()" class="btn btn-primary">تحديث</button>
+                <button onclick="logout()" class="btn btn-danger">تسجيل خروج</button>
+                <a href="/" class="btn btn-secondary">عودة للرئيسية</a>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>الملفات النشطة</h3>
+                <div class="value" id="totalFiles">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>إجمالي الحجم</h3>
+                <div class="value" id="totalSize">0 MB</div>
+            </div>
+        </div>
+
+        <div class="uploads-list">
+            <div id="uploadsList"></div>
+        </div>
+    </div>
+
+    <script>
+        let uploads = [];
+
+        async function logout() {
+            try {
+                await fetch('/api/logout', { method: 'POST' });
+                window.location.href = '/login';
+            } catch (error) {
+                console.error('Error logging out:', error);
+                window.location.href = '/login';
+            }
+        }
+
+        async function loadUploads() {
+            try {
+                const response = await fetch('/api/admin/uploads');
+                uploads = await response.json();
+                renderUploads();
+            } catch (error) {
+                console.error('Error loading uploads:', error);
+            }
+        }
+
+        function renderUploads() {
+            const listContainer = document.getElementById('uploadsList');
+            const totalFiles = document.getElementById('totalFiles');
+            const totalSize = document.getElementById('totalSize');
+
+            // Calculate stats
+            const totalFilesCount = uploads.length;
+            const totalSizeBytes = uploads.reduce((sum, u) => sum + u.size, 0);
+            
+            totalFiles.textContent = totalFilesCount;
+            totalSize.textContent = formatBytes(totalSizeBytes);
+
+            if (uploads.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📭</div>
+                        <p>لا توجد ملفات نشطة حالياً</p>
+                    </div>
+                `;
+                return;
+            }
+
+            listContainer.innerHTML = uploads.map(upload => {
+                const timeLeft = upload.timeLeft;
+                const progress = Math.min(100, (timeLeft / (60 * 60 * 1000)) * 100);
+                
+                let badge = '';
+                let icon = '📄';
+                if (upload.mimetype.startsWith('image/')) {
+                    badge = '<span class="badge badge-image">صورة</span>';
+                    icon = '🖼️';
+                } else if (upload.mimetype.startsWith('text/')) {
+                    badge = '<span class="badge badge-text">نص</span>';
+                    icon = '📝';
+                } else {
+                    badge = '<span class="badge badge-other">ملف</span>';
+                }
+
+                return `
+                    <div class="upload-item" data-id="${upload.id}">
+                        <div class="icon">${icon}</div>
+                        <div class="info">
+                            <h4>${upload.originalName}</h4>
+                            <p>${formatBytes(upload.size)} • ${new Date(upload.uploadedAt).toLocaleString('ar-SA')}</p>
+                            ${badge}
+                        </div>
+                        <div class="time">
+                            <div class="progress">
+                                <div class="progress-bar" style="width: ${progress}%"></div>
+                            </div>
+                            <div class="time-left">${formatTimeLeft(timeLeft)}</div>
+                        </div>
+                        <div class="actions">
+                            <a href="/${upload.id}" target="_blank" class="btn btn-primary">عرض</a>
+                            <button onclick="copyLink('${upload.url}')" class="btn btn-secondary">نسخ</button>
+                            <button onclick="deleteUpload('${upload.id}')" class="btn btn-danger">حذف</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function deleteUpload(id) {
+            if (!confirm('هل أنت متأكد من حذف هذا الملف؟')) return;
+
+            try {
+                const response = await fetch(`/api/admin/delete/${id}`, {
+                    method: 'DELETE'
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    uploads = uploads.filter(u => u.id !== id);
+                    renderUploads();
+                } else {
+                    alert('فشل الحذف: ' + result.message);
+                }
+            } catch (error) {
+                alert('خطأ أثناء الحذف: ' + error.message);
+            }
+        }
+
+        function copyLink(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                alert('تم نسخ الرابط!');
+            }).catch(() => {
+                alert('فشل نسخ الرابط');
+            });
+        }
+
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        function formatTimeLeft(ms) {
+            if (ms <= 0) return 'منتهي';
+            const minutes = Math.floor(ms / (60 * 1000));
+            const seconds = Math.floor((ms % (60 * 1000)) / 1000);
+            if (minutes > 0) {
+                return `${minutes} دقيقة ${seconds} ثانية`;
+            }
+            return `${seconds} ثانية`;
+        }
+
+        // Auto-refresh every 10 seconds
+        setInterval(loadUploads, 10000);
+        setInterval(renderUploads, 1000);
+
+        // Initial load
+        loadUploads();
+    </script>
+</body>
+</html>

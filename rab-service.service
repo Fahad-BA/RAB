@@ -1,0 +1,18 @@
+[Unit]
+Description=Read & Burn Service
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/fahad/rab-service
+Environment="NODE_ENV=production"
+Environment="DOMAIN=https://rab.fhidan.com"
+Environment="PORT=4002"
+Environment="ADMIN_USERNAME=Fahad"
+Environment="ADMIN_PASSWORD=213325@Fx9"
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target

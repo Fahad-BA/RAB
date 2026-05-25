@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read & Burn</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 2rem 1rem;
+        }
+        .card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            color: #1e293b;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .header p {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            background: #f1f5f9;
+            padding: 0.25rem;
+            border-radius: 0.75rem;
+        }
+        .tab {
+            font-family: 'Tajawal', sans-serif;
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            background: transparent;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #64748b;
+        }
+        .tab.active {
+            background: white;
+            color: #4f46e5;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            color: #475569;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        .form-group input[type="file"] {
+            background: #f8fafc;
+            cursor: pointer;
+        }
+        .btn {
+            width: 100%;
+            font-family: 'Tajawal', sans-serif;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            font-family: 'Tajawal', sans-serif;
+            color: white;
+        }
+        .btn-primary:hover {
+            font-family: 'Tajawal', sans-serif;
+            transform: scale(1.02);
+        }
+        .btn-primary:disabled {
+            font-family: 'Tajawal', sans-serif;
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            border-radius: 0.5rem;
+            display: none;
+        }
+        .result.success {
+            background: #f0fdf4;
+            border-color: #86efac;
+            color: #166534;
+        }
+        .result.error {
+            background: #fef2f2;
+            border-color: #fca5a5;
+            color: #991b1b;
+        }
+        .result a {
+            color: #4f46e5;
+            text-decoration: none;
+            word-break: break-all;
+        }
+        .result a:hover {
+            text-decoration: underline;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .preview-container {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 0.5rem;
+        }
+        .preview-container img {
+            max-width: 100%;
+            border-radius: 0.5rem;
+        }
+        .preview-container .preview-text {
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.9rem;
+            color: #334155;
+        }
+        .admin-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .admin-link a {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+        .admin-link a:hover {
+            color: #4f46e5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h1>🔥 Read & Burn</h1>
+                <p>ارفع نص أو ملف واحصل على رابط مؤقت (ساعة واحدة)</p>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" data-tab="text">نص</button>
+                <button class="tab" data-tab="file">ملف</button>
+            </div>
+
+            
+            <div id="textTab" class="tab-content active">
+                <form id="textForm">
+                    <div class="form-group">
+                        <label for="textInput">اكتب النص هنا:</label>
+                        <textarea id="textInput" name="text" placeholder="اكتب النص الذي تريد مشاركته مؤقتاً..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="textSubmit">
+                        إنشاء رابط مؤقت
+                    </button>
+                </form>
+            </div>
+
+            
+            <div id="fileTab" class="tab-content">
+                <form id="fileForm">
+                    <div class="form-group">
+                        <label for="fileInput">اختر ملف:</label>
+                        <input type="file" id="fileInput" name="file">
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="fileSubmit">
+                        رفع الملف
+                    </button>
+                </form>
+            </div>
+
+            
+            <div id="result" class="result">
+                <p id="resultText"></p>
+                <div id="previewContainer" class="preview-container hidden"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTab = tab.dataset.tab;
+
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+
+                tab.classList.add('active');
+                document.getElementById(targetTab + 'Tab').classList.add('active');
+            });
+        });
+
+        const resultDiv = document.getElementById('result');
+        const resultText = document.getElementById('resultText');
+        const previewContainer = document.getElementById('previewContainer');
+
+        function showResult(success, message, url = null) {
+            resultDiv.className = 'result ' + (success ? 'success' : 'error');
+            resultText.innerHTML = message + (url ? `<br><br><a href="${url}" target="_blank">🔗 ${url}</a>` : '');
+            resultDiv.style.display = 'block';
+            previewContainer.classList.add('hidden');
+        }
+
+        async function showPreview(url) {
+            try {
+                const response = await fetch(`/api/info/${url.split('/').pop()}`);
+                const data = await response.json();
+
+                if (data.isImage) {
+                    previewContainer.innerHTML = `<img src="${url}" alt="Preview">`;
+                    previewContainer.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.log('Could not fetch preview info:', error);
+            }
+        }
+
+        
+        document.getElementById('textForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const text = document.getElementById('textInput').value.trim();
+            if (!text) {
+                showResult(false, 'الرجاء كتابة نص قبل الإرسال');
+                return;
+            }
+
+            const submitBtn = document.getElementById('textSubmit');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'جاري الإنشاء...';
+
+            try {
+                const response = await fetch('/upload/text', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain'
+                    },
+                    body: text
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const url = data.url;
+                    showResult(true, 'تم إنشاء الرابط المؤقت بنجاح! 🎉<br>ينتهي بعد ساعة واحدة', url);
+                    document.getElementById('textInput').value = '';
+                } else {
+                    showResult(false, 'فشل الإنشاء: ' + (data.message || 'حدث خطأ غير معروف'));
+                }
+            } catch (error) {
+                showResult(false, 'حدث خطأ أثناء الاتصال بالخادم: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'إنشاء رابط مؤقت';
+            }
+        });
+
+        
+        document.getElementById('fileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length === 0) {
+                showResult(false, 'الرجاء اختيار ملف قبل الرفع');
+                return;
+            }
+
+            const submitBtn = document.getElementById('fileSubmit');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'جاري الرفع...';
+
+            try {
+                const formData = new FormData();
+                formData.append('file', fileInput.files[0]);
+
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const url = data.url;
+                    showResult(true, 'تم رفع الملف بنجاح! 🎉<br>ينتهي بعد ساعة واحدة', url);
+
+                    // Show preview if it's an image
+                    if (fileInput.files[0].type.startsWith('image/')) {
+                        await showPreview(url);
+                    }
+
+                    fileInput.value = '';
+                } else {
+                    showResult(false, 'فشل الرفع: ' + (data.message || 'حدث خطأ غير معروف'));
+                }
+            } catch (error) {
+                showResult(false, 'حدث خطأ أثناء الاتصال بالخادم: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'رفع الملف';
+            }
+        });
+    </script>
+</body>
+</html>
