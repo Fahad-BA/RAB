@@ -43,3 +43,4 @@ Thumbs.db
 
 # Systemd
 *.service
+metadata.json
