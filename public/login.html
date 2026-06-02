@@ -1,134 +1,42 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول - Admin</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>
-    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background: linear-gradient(135deg, #121358 0%, #232F72 50%, #2F578A 100%);
-            min-height: 100vh;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .container {
-            max-width: 400px;
-            width: 100%;
-            padding: 2rem 1rem;
-        }
-        .card {
-            background: white;
-            border-radius: 1.5rem;
-            padding: 2.5rem;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            color: #1e293b;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .header h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: #36ADA3;
-        }
-        .header p {
-            color: #64748b;
-            font-size: 0.875rem;
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        .form-group label {
-            display: block;
-            color: #475569;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            font-family: inherit;
-        }
-        .form-group input:focus {
-            outline: none;
-            border-color: #36ADA3;
-            box-shadow: 0 0 0 3px rgba(54, 173, 163, 0.1);
-        }
-        .btn {
-            font-family: 'Tajawal', sans-serif;
-            width: 100%;
-            padding: 0.75rem;
-            border: none;
-            border-radius: 0.75rem;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #2F578A 0%, #36ADA3 100%);
-            color: white;
-        }
-        .btn-primary:hover {
-            transform: scale(1.02);
-        }
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .error {
-            background: #fef2f2;
-            border: 1px solid #fca5a5;
-            color: #991b1b;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.875rem;
-            display: none;
-        }
-        .error.show {
-            display: block;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#760031">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="/manifest.json">
+    <title>Login - Admin</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <div class="container">
-        <div class="card">
-            <div class="header">
-                <h1>🔐 تسجيل الدخول</h1>
-                <p>صفحة التحكم - Read & Burn</p>
+    <div class="container login-container">
+        <div class="card login-card">
+            <div class="header login-header">
+                <h1>🔐 Login</h1>
+                <p>Admin Panel - Read & Burn</p>
             </div>
 
             <div class="error" id="error"></div>
 
             <form id="loginForm">
                 <div class="form-group">
-                    <label for="username">اسم المستخدم</label>
+                    <label for="username">Username</label>
                     <input type="text" id="username" name="username" required>
                 </div>
                 <div class="form-group">
-                    <label for="password">كلمة المرور</label>
+                    <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
                 </div>
                 <button type="submit" class="btn btn-primary" id="submitBtn">
-                    تسجيل الدخول
+                    Login
                 </button>
             </form>
         </div>
@@ -146,7 +54,7 @@
             const password = document.getElementById('password').value;
 
             submitBtn.disabled = true;
-            submitBtn.textContent = 'جاري التحقق...';
+            submitBtn.textContent = 'Verifying...';
 
             try {
                 const response = await fetch('/api/login', {
@@ -162,18 +70,54 @@
                 if (data.success) {
                     window.location.href = '/admin';
                 } else {
-                    errorDiv.textContent = data.message || 'بيانات غير صحيحة';
+                    errorDiv.textContent = data.message || 'Invalid credentials';
                     errorDiv.classList.add('show');
                     submitBtn.disabled = false;
-                    submitBtn.textContent = 'تسجيل الدخول';
+                    submitBtn.textContent = 'Login';
                 }
             } catch (error) {
-                errorDiv.textContent = 'حدث خطأ أثناء الاتصال';
+                errorDiv.textContent = 'Connection error';
                 errorDiv.classList.add('show');
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'تسجيل الدخول';
+                submitBtn.textContent = 'Login';
             }
         });
+    </script>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // Add to home screen prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        function showInstallPrompt() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    } else {
+                        console.log('User dismissed the install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
     </script>
 </body>
 </html>

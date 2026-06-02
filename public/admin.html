@@ -1,202 +1,39 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#760031">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="/manifest.json">
     <title>Admin - Read & Burn</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>
-    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background: linear-gradient(135deg, #121358 0%, #232F72 50%, #2F578A 100%);
-            min-height: 100vh;
-            color: #fff;
-            padding: 2rem;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .header {
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        .header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-        }
-        .header-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        .stat-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 1rem;
-            color: #1e293b;
-        }
-        .stat-card h3 {
-            font-size: 0.875rem;
-            color: #64748b;
-            margin-bottom: 0.5rem;
-        }
-        .stat-card .value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #36ADA3;
-        }
-        .uploads-list {
-            background: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            color: #1e293b;
-        }
-        .upload-item {
-            display: grid;
-            grid-template-columns: auto 1fr auto auto;
-            gap: 1rem;
-            align-items: center;
-            padding: 1rem;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .upload-item:last-child {
-            border-bottom: none;
-        }
-        .upload-item .icon {
-            font-size: 2rem;
-        }
-        .upload-item .info h4 {
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-        }
-        .upload-item .info p {
-            font-size: 0.875rem;
-            color: #64748b;
-        }
-        .upload-item .time {
-            text-align: left;
-        }
-        .upload-item .time .progress {
-            width: 150px;
-            height: 8px;
-            background: #e2e8f0;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 0.5rem;
-        }
-        .upload-item .time .progress-bar {
-            height: 100%;
-            background: linear-gradient(135deg, #2F578A 0%, #36ADA3 100%);
-            transition: width 0.3s ease;
-        }
-        .upload-item .time .time-left {
-            font-size: 0.875rem;
-            color: #64748b;
-        }
-        .upload-item .actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-        .btn {
-            padding: 0.5rem 1rem;
-            font-family: 'Tajawal', sans-serif;
-            border: none;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .btn-primary {
-            background: #36ADA3;
-            color: white;
-        }
-        .btn-primary:hover {
-            background: #2F578A;
-        }
-        .btn-danger {
-            background: #121358;
-            color: white;
-        }
-        .btn-danger:hover {
-            background: #232F72;
-        }
-        .btn-secondary {
-            background: #e2e8f0;
-            color: #1e293b;
-        }
-        .btn-secondary:hover {
-            background: #cbd5e1;
-        }
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            color: #64748b;
-        }
-        .empty-state .icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-        }
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-        .badge-image {
-            background: #e0f2fe;
-            color: #121358;
-        }
-        .badge-text {
-            background: #ecfdf5;
-            color: #36ADA3;
-        }
-        .badge-other {
-            background: #e2e8f0;
-            color: #475569;
-        }
-    </style>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🔥 لوحة التحكم</h1>
+            <h1 class="admin-header">🔥 Admin Panel</h1>
             <div class="header-actions">
-                <button onclick="loadUploads()" class="btn btn-primary">تحديث</button>
-                <button onclick="logout()" class="btn btn-danger">تسجيل خروج</button>
-                <a href="/" class="btn btn-secondary">عودة للرئيسية</a>
+                <button onclick="loadUploads()" class="btn btn-primary">Refresh</button>
+                <button onclick="logout()" class="btn btn-danger">Logout</button>
+                <a href="/" class="btn btn-secondary">Back to Home</a>
             </div>
         </div>
 
         <div class="stats">
             <div class="stat-card">
-                <h3>الملفات النشطة</h3>
+                <h3>Active Files</h3>
                 <div class="value" id="totalFiles">0</div>
             </div>
             <div class="stat-card">
-                <h3>إجمالي الحجم</h3>
+                <h3>Total Size</h3>
                 <div class="value" id="totalSize">0 MB</div>
             </div>
         </div>
@@ -245,7 +82,7 @@
                 listContainer.innerHTML = `
                     <div class="empty-state">
                         <div class="icon">📭</div>
-                        <p>لا توجد ملفات نشطة حالياً</p>
+                        <p>No active files currently</p>
                     </div>
                 `;
                 return;
@@ -258,13 +95,13 @@
                 let badge = '';
                 let icon = '📄';
                 if (upload.mimetype.startsWith('image/')) {
-                    badge = '<span class="badge badge-image">صورة</span>';
+                    badge = '<span class="badge badge-image">Image</span>';
                     icon = '🖼️';
                 } else if (upload.mimetype.startsWith('text/')) {
-                    badge = '<span class="badge badge-text">نص</span>';
+                    badge = '<span class="badge badge-text">Text</span>';
                     icon = '📝';
                 } else {
-                    badge = '<span class="badge badge-other">ملف</span>';
+                    badge = '<span class="badge badge-other">File</span>';
                 }
 
                 return `
@@ -272,7 +109,7 @@
                         <div class="icon">${icon}</div>
                         <div class="info">
                             <h4>${upload.originalName}</h4>
-                            <p>${formatBytes(upload.size)} • ${new Date(upload.uploadedAt).toLocaleString('ar-SA')}</p>
+                            <p>${formatBytes(upload.size)} • ${new Date(upload.uploadedAt).toLocaleString('en-US')}</p>
                             ${badge}
                         </div>
                         <div class="time">
@@ -282,9 +119,9 @@
                             <div class="time-left">${formatTimeLeft(timeLeft)}</div>
                         </div>
                         <div class="actions">
-                            <a href="/${upload.id}" target="_blank" class="btn btn-primary">عرض</a>
-                            <button onclick="copyLink('${upload.url}')" class="btn btn-secondary">نسخ</button>
-                            <button onclick="deleteUpload('${upload.id}')" class="btn btn-danger">حذف</button>
+                            <a href="/${upload.id}" target="_blank" class="btn btn-primary">View</a>
+                            <button onclick="copyLink('${upload.url}')" class="btn btn-secondary">Copy</button>
+                            <button onclick="deleteUpload('${upload.id}')" class="btn btn-danger">Delete</button>
                         </div>
                     </div>
                 `;
@@ -292,7 +129,7 @@
         }
 
         async function deleteUpload(id) {
-            if (!confirm('هل أنت متأكد من حذف هذا الملف؟')) return;
+            if (!confirm('Are you sure you want to delete this file?')) return;
 
             try {
                 const response = await fetch(`/api/admin/delete/${id}`, {
@@ -304,18 +141,18 @@
                     uploads = uploads.filter(u => u.id !== id);
                     renderUploads();
                 } else {
-                    alert('فشل الحذف: ' + result.message);
+                    alert('Delete failed: ' + result.message);
                 }
             } catch (error) {
-                alert('خطأ أثناء الحذف: ' + error.message);
+                alert('Delete error: ' + error.message);
             }
         }
 
         function copyLink(url) {
             navigator.clipboard.writeText(url).then(() => {
-                alert('تم نسخ الرابط!');
+                alert('Link copied!');
             }).catch(() => {
-                alert('فشل نسخ الرابط');
+                alert('Failed to copy link');
             });
         }
 
@@ -328,13 +165,13 @@
         }
 
         function formatTimeLeft(ms) {
-            if (ms <= 0) return 'منتهي';
+            if (ms <= 0) return 'Expired';
             const minutes = Math.floor(ms / (60 * 1000));
             const seconds = Math.floor((ms % (60 * 1000)) / 1000);
             if (minutes > 0) {
-                return `${minutes} دقيقة ${seconds} ثانية`;
+                return `${minutes} min ${seconds} sec`;
             }
-            return `${seconds} ثانية`;
+            return `${seconds} sec`;
         }
 
         // Auto-refresh every 10 seconds
@@ -343,6 +180,42 @@
 
         // Initial load
         loadUploads();
+    </script>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // Add to home screen prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        function showInstallPrompt() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    } else {
+                        console.log('User dismissed the install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
     </script>
 </body>
 </html>
