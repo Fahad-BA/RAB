@@ -1,121 +1,402 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ملف غير موجود - Read & Burn</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>
-    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#760031">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="/manifest.json">
+    <title>File Not Found - Read & Burn</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* Mobile-First Enhanced 404 Page */
         body {
-            font-family: 'Tajawal', sans-serif;
-            background: linear-gradient(135deg, #121358 0%, #232F72 50%, #2F578A 100%);
-            min-height: 100vh;
-            color: #fff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        .container-404 {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 2rem 1rem;
-        }
-        .container {
-            max-width: 600px;
-            width: 100%;
+            min-height: 100vh;
+            padding: 1rem;
             text-align: center;
         }
-        .icon {
-            font-size: 8rem;
-            margin-bottom: 2rem;
-            animation: burn 2s ease-in-out infinite;
+        
+        .message-404 {
+            background: linear-gradient(135deg, rgba(118, 0, 49, 0.1) 0%, rgba(213, 28, 57, 0.1) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            max-width: 90vw;
         }
-        @keyframes burn {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: scale(1.1);
-                opacity: 0.8;
-            }
+        
+        .message-404 p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+            margin-bottom: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
-        h1 {
-            font-size: 2.5rem;
+        
+        .reasons-404 {
+            text-align: left;
+            margin-top: 1rem;
+            padding-left: 1rem;
+        }
+        
+        .reasons-404 li {
+            margin-bottom: 0.5rem;
+            color: #cbd5e1;
+            font-size: 0.875rem;
+            list-style-type: none;
+            position: relative;
+            line-height: 1.4;
+        }
+        
+        .reasons-404 li::before {
+            content: "🔥";
+            position: absolute;
+            left: -1rem;
+            top: 0;
+        }
+        
+        .h1-404 {
+            font-size: 1.75rem;
             font-weight: 700;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, #121358 0%, #232F72 100%);
+            background: linear-gradient(135deg, #760031 0%, #D51C39 50%, #FF6060 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            line-height: 1.2;
         }
-        .message {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 2rem;
-            border-radius: 1rem;
-            margin-bottom: 2rem;
-            backdrop-filter: blur(10px);
+        
+        .icon-404 {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            animation: burn 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px rgba(255, 96, 96, 0.25));
         }
-        .message p {
-            font-size: 1.125rem;
-            line-height: 1.8;
-            color: #e2e8f0;
+        
+        @keyframes burn {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            25% {
+                transform: scale(1.1) rotate(-2deg);
+                opacity: 0.9;
+            }
+            50% {
+                transform: scale(1.15) rotate(0deg);
+                opacity: 0.8;
+            }
+            75% {
+                transform: scale(1.1) rotate(2deg);
+                opacity: 0.9;
+            }
         }
-        .reasons {
-            text-align: right;
-            margin-top: 1rem;
-            padding-right: 1.5rem;
-        }
-        .reasons li {
-            margin-bottom: 0.5rem;
-            color: #cbd5e1;
-        }
-        .btn {
+        
+        .btn-404 {
             display: inline-block;
-            padding: 0.875rem 2rem;
-            background: linear-gradient(135deg, #2F578A 0%, #36ADA3 100%);
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #760031 0%, #D51C39 100%);
             color: white;
             text-decoration: none;
             border-radius: 0.75rem;
             font-size: 1rem;
-            font-weight: 500;
-            transition: all 0.2s;
+            font-weight: 600;
+            transition: all 0.3s ease;
             cursor: pointer;
             border: none;
+            box-shadow: 0 4px 12px rgba(213, 28, 57, 0.25);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            min-height: 48px;
+            min-width: 200px;
         }
-        .btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(54, 173, 163, 0.3);
+        
+        .btn-404:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(213, 28, 57, 0.3);
         }
-        .secondary {
-            background: rgba(255, 255, 255, 0.1);
-            margin-left: 1rem;
+        
+        .btn-404:active {
+            transform: translateY(0);
+        }
+        
+        /* Mobile Specific Enhancements */
+        @media (max-width: 768px) {
+            .container-404 {
+                padding: 0.75rem;
+            }
+            
+            .icon-404 {
+                font-size: 4rem;
+                margin-bottom: 0.75rem;
+                animation-duration: 2.5s;
+            }
+            
+            .h1-404 {
+                font-size: 1.5rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .message-404 {
+                padding: 1.25rem;
+                margin-bottom: 1.25rem;
+                border-radius: 0.75rem;
+            }
+            
+            .message-404 p {
+                font-size: 0.875rem;
+                line-height: 1.5;
+            }
+            
+            .reasons-404 {
+                margin-top: 0.75rem;
+                padding-left: 0.75rem;
+            }
+            
+            .reasons-404 li {
+                font-size: 0.75rem;
+                margin-bottom: 0.375rem;
+                line-height: 1.3;
+            }
+            
+            .reasons-404 li::before {
+                font-size: 0.75rem;
+                left: -0.75rem;
+            }
+            
+            .btn-404 {
+                padding: 0.875rem 1.5rem;
+                font-size: 0.875rem;
+                min-width: 180px;
+                min-height: 44px;
+                border-radius: 0.5rem;
+            }
+        }
+        
+        /* Small Mobile (under 480px) */
+        @media (max-width: 480px) {
+            .container-404 {
+                padding: 0.5rem;
+            }
+            
+            .icon-404 {
+                font-size: 3.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .h1-404 {
+                font-size: 1.25rem;
+                margin-bottom: 0.5rem;
+                letter-spacing: -0.01em;
+            }
+            
+            .message-404 {
+                padding: 1rem;
+                margin-bottom: 1rem;
+                max-width: 95vw;
+            }
+            
+            .message-404 p {
+                font-size: 0.8rem;
+                line-height: 1.4;
+            }
+            
+            .reasons-404 {
+                margin-top: 0.5rem;
+                padding-left: 0.5rem;
+            }
+            
+            .reasons-404 li {
+                font-size: 0.7rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .reasons-404 li::before {
+                font-size: 0.7rem;
+                left: -0.5rem;
+            }
+            
+            .btn-404 {
+                padding: 0.75rem 1.25rem;
+                font-size: 0.8rem;
+                min-width: 160px;
+                min-height: 40px;
+                border-radius: 0.5rem;
+                letter-spacing: 0.25px;
+            }
+        }
+        
+        /* Landscape Mobile */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .container-404 {
+                padding: 0.5rem 1rem;
+            }
+            
+            .icon-404 {
+                font-size: 3rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .h1-404 {
+                font-size: 1.25rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .message-404 {
+                padding: 0.75rem;
+                margin-bottom: 0.75rem;
+                max-width: 80vw;
+            }
+            
+            .btn-404 {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.8rem;
+                min-height: 36px;
+            }
+        }
+        
+        /* Touch Optimization */
+        @media (hover: none) {
+            .btn-404:hover {
+                transform: none;
+            }
+            
+            .btn-404:active {
+                transform: scale(0.98);
+                box-shadow: 0 2px 8px rgba(213, 28, 57, 0.3);
+            }
+        }
+        
+        /* Dark Mode Support */
+        @media (prefers-color-scheme: dark) {
+            .message-404 {
+                background: linear-gradient(135deg, rgba(74, 0, 29, 0.3) 0%, rgba(107, 15, 36, 0.3) 100%);
+                border: 1px solid rgba(255, 255, 255, 0.05);
+            }
+            
+            .h1-404 {
+                text-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+            }
+        }
+        
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            .icon-404 {
+                animation: none;
+            }
+            
+            * {
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="icon">🔥</div>
+    <div class="container container-404">
+        <div class="icon-404">🔥</div>
         
-        <h1>تم حرق الملف</h1>
+        <h1 class="h1-404">File Burned</h1>
         
-        <div class="message">
-            <p>هذا الملف غير متوفر حالياً.</p>
+        <div class="message-404">
+            <p>This file is no longer available. It has been permanently deleted or has expired.</p>
             
-            <ul class="reasons">
-                <li>تم حرق الملف بالكامل</li>
-                <li>انتهت صلاحية الرابط (ساعة واحدة)</li>
-                <li>تم حذف الملف يدوياً</li>
-                <li>الرابط غير صحيح</li>
+            <ul class="reasons-404">
+                <li>File has been completely burned</li>
+                <li>Link expired (one hour limit)</li>
+                <li>File was manually deleted</li>
+                <li>Invalid or broken link</li>
             </ul>
         </div>
 
         <div>
-            <a href="/" class="btn">رفع ملف جديد</a>
+            <a href="/" class="btn-404">Upload New File</a>
         </div>
     </div>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // Add to home screen prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        function showInstallPrompt() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    } else {
+                        console.log('User dismissed the install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
+        
+        // Mobile-friendly interactions
+        document.addEventListener('DOMContentLoaded', () => {
+            const icon = document.querySelector('.icon-404');
+            const btn = document.querySelector('.btn-404');
+            
+            // Touch-friendly icon interaction
+            icon.addEventListener('click', (e) => {
+                // Add haptic feedback if available
+                if (navigator.vibrate) {
+                    navigator.vibrate(50);
+                }
+                
+                icon.style.transform = 'scale(1.2) rotate(360deg)';
+                setTimeout(() => {
+                    icon.style.transform = '';
+                }, 600);
+            });
+            
+            // Button active state feedback
+            btn.addEventListener('touchstart', () => {
+                btn.style.transform = 'scale(0.95)';
+            });
+            
+            btn.addEventListener('touchend', () => {
+                setTimeout(() => {
+                    btn.style.transform = '';
+                }, 150);
+            });
+        });
+    </script>
 </body>
 </html>
