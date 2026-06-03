@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#760031">
+    <meta name="theme-color" content="#222831">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
@@ -33,7 +33,7 @@
         }
         
         .message-404 {
-            background: linear-gradient(135deg, rgba(118, 0, 49, 0.1) 0%, rgba(213, 28, 57, 0.1) 100%);
+            background: rgba(0, 173, 181, 0.1);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 1.5rem;
@@ -52,7 +52,7 @@
         }
         
         .reasons-404 {
-            text-align: left;
+            text-align: left !important;
             margin-top: 1rem;
             padding-left: 1rem;
             direction: ltr;
@@ -65,23 +65,24 @@
             list-style-type: none;
             position: relative;
             line-height: 1.4;
+            text-align: left !important;
+            direction: ltr !important;
         }
         
         .reasons-404 li::before {
-            content: "🔥";
+            content: "•";
             position: absolute;
-            left: -1rem;
+            left: -0.5rem;
             top: 0;
+            color: #00adb5;
+            font-weight: bold;
         }
         
         .h1-404 {
             font-size: 1.75rem;
             font-weight: 700;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, #760031 0%, #D51C39 50%, #FF6060 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #00adb5;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             line-height: 1.2;
         }
@@ -90,7 +91,7 @@
             font-size: 5rem;
             margin-bottom: 1rem;
             animation: burn 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 15px rgba(255, 96, 96, 0.25));
+            filter: drop-shadow(0 0 15px rgba(57, 62, 70, 0.25));
         }
         
         @keyframes burn {
@@ -115,7 +116,7 @@
         .btn-404 {
             display: inline-block;
             padding: 1rem 2rem;
-            background: linear-gradient(135deg, #760031 0%, #D51C39 100%);
+            background: #00adb5;
             color: white;
             text-decoration: none;
             border-radius: 0.75rem;
@@ -124,7 +125,7 @@
             transition: all 0.3s ease;
             cursor: pointer;
             border: none;
-            box-shadow: 0 4px 12px rgba(213, 28, 57, 0.25);
+            box-shadow: 0 4px 12px rgba(0, 173, 181, 0.25);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             touch-action: manipulation;
@@ -135,7 +136,7 @@
         
         .btn-404:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(213, 28, 57, 0.3);
+            box-shadow: 0 6px 16px rgba(0, 173, 181, 0.3);
         }
         
         .btn-404:active {
@@ -183,7 +184,9 @@
             
             .reasons-404 li::before {
                 font-size: 0.75rem;
-                left: -0.75rem;
+                left: -0.5rem;
+                color: #00adb5;
+                font-weight: bold;
             }
             
             .btn-404 {
@@ -236,6 +239,8 @@
             .reasons-404 li::before {
                 font-size: 0.7rem;
                 left: -0.5rem;
+                color: #00adb5;
+                font-weight: bold;
             }
             
             .btn-404 {
@@ -285,14 +290,14 @@
             
             .btn-404:active {
                 transform: scale(0.98);
-                box-shadow: 0 2px 8px rgba(213, 28, 57, 0.3);
+                box-shadow: 0 2px 8px rgba(0, 173, 181, 0.3);
             }
         }
         
         /* Dark Mode Support */
         @media (prefers-color-scheme: dark) {
             .message-404 {
-                background: linear-gradient(135deg, rgba(74, 0, 29, 0.3) 0%, rgba(107, 15, 36, 0.3) 100%);
+                background: rgba(0, 173, 181, 0.3);
                 border: 1px solid rgba(255, 255, 255, 0.05);
             }
             
