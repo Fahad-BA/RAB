@@ -92,7 +92,7 @@ const storage = multer.diskStorage({
     cb(null, UPLOAD_DIR);
   },
   filename: (req, file, cb) => {
-    const id = nanoid(7);
+    const id = nanoid(4);
     const ext = path.extname(file.originalname);
     cb(null, id + ext);
   }
@@ -275,7 +275,7 @@ app.delete('/delete/:id', (req, res) => {
 // Upload endpoint
 app.post('/upload', upload.single('file'), (req, res) => {
   try {
-    const id = nanoid(7);
+    const id = nanoid(4);
     const ext = path.extname(req.file.originalname);
     const filename = id + ext;
 
@@ -316,7 +316,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
 // Handle text uploads
 app.post('/upload/text', express.text({ limit: '1MB' }), (req, res) => {
   try {
-    const id = nanoid(7);
+    const id = nanoid(4);
     const filename = id + '.txt';
     const filePath = path.join(UPLOAD_DIR, filename);
 
