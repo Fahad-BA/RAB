@@ -1,4 +1,5 @@
 const express = require('express');
+const compression = require('compression');
 const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
@@ -12,8 +13,18 @@ const PORT = process.env.PORT || 4002;
 // Constants
 const UPLOAD_DIR = path.join(__dirname, 'uploads');
 const METADATA_FILE = path.join(__dirname, 'metadata.json');
+const PUBLIC_DIR = path.join(__dirname, 'public');
 const DOMAIN = process.env.DOMAIN || 'https://rab.fhidan.com';
 const EXPIRY_MS = 60 * 60 * 1000; // 1 hour
+
+// Pre-compute static file paths (avoids path.join on every request)
+const STATIC_FILES = {
+  '404.html': path.join(PUBLIC_DIR, '404.html'),
+  'admin.html': path.join(PUBLIC_DIR, 'admin.html'),
+  'view.html': path.join(PUBLIC_DIR, 'view.html'),
+  'login.html': path.join(PUBLIC_DIR, 'login.html'),
+  'index.html': path.join(PUBLIC_DIR, 'index.html'),
+};
 
 // Ensure upload directory exists
 if (!fs.existsSync(UPLOAD_DIR)) {
@@ -34,7 +45,21 @@ function loadMetadata() {
   return new Map();
 }
 
-function saveMetadata(files) {
+// Debounced metadata save — accumulates writes and saves once after 100ms
+let saveTimer = null;
+function saveMetadata() {
+  if (saveTimer) return; // Already scheduled
+  saveTimer = setTimeout(() => {
+    saveTimer = null;
+    const data = JSON.stringify(Array.from(files.entries()));
+    fs.writeFile(METADATA_FILE, data, (err) => {
+      if (err) console.error('Error saving metadata:', err);
+    });
+  }, 100);
+}
+
+// Synchronous save for shutdown/critical paths only
+function saveMetadataSync() {
   try {
     const data = JSON.stringify(Array.from(files.entries()));
     fs.writeFileSync(METADATA_FILE, data, 'utf-8');
@@ -53,17 +78,31 @@ const ADMIN_SECRET = process.env.ADMIN_SECRET || 'change-me-please';
 // Simple session storage (in production, use proper session store)
 const sessions = new Map();
 
-// Middleware
-app.use(cors());
+// ── Middleware ──────────────────────────────────────────
+
+// Compression for all responses (gzip)
+app.use(compression({ level: 6, threshold: 1024 }));
+
+// CORS only for API routes (not static files)
+app.use('/api', cors());
+app.use('/upload', cors());
+app.use('/delete', cors());
+
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
+// Static files with caching headers
+app.use(express.static(PUBLIC_DIR, {
+  etag: true,
+  maxAge: '1h',
+  lastModified: true,
+  immutable: false,
+}));
 
 // Auth middleware
 function requireAuth(req, res, next) {
   const sessionId = req.cookies.sessionId;
   if (!sessionId || !sessions.has(sessionId)) {
-    // For API requests, return JSON error instead of redirect
     if (req.path.startsWith('/api/') || req.xhr) {
       return res.status(401).json({ success: false, message: 'Unauthorized' });
     }
@@ -72,7 +111,6 @@ function requireAuth(req, res, next) {
   const session = sessions.get(sessionId);
   if (session.expiresAt < Date.now()) {
     sessions.delete(sessionId);
-    // For API requests, return JSON error instead of redirect
     if (req.path.startsWith('/api/') || req.xhr) {
       return res.status(401).json({ success: false, message: 'Session expired' });
     }
@@ -113,9 +151,7 @@ function cleanupExpiredFiles() {
     if (now > metadata.expiresAt) {
       try {
         const filePath = path.join(UPLOAD_DIR, metadata.filename);
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath);
-        }
+        fs.unlink(filePath, () => {}); // async, fire-and-forget
         files.delete(id);
         cleaned++;
       } catch (error) {
@@ -124,7 +160,7 @@ function cleanupExpiredFiles() {
     }
   }
   if (cleaned > 0) {
-    saveMetadata(files);
+    saveMetadata();
     console.log(`Cleaned up ${cleaned} expired files`);
   }
 }
@@ -132,7 +168,7 @@ function cleanupExpiredFiles() {
 // Run cleanup every 5 minutes
 setInterval(cleanupExpiredFiles, 5 * 60 * 1000);
 
-// Routes (ORDER MATTERS - specific routes before dynamic ones)
+// ── Routes (ORDER MATTERS - specific routes before dynamic ones) ──
 
 // Health check
 app.get('/health', (req, res) => {
@@ -141,7 +177,7 @@ app.get('/health', (req, res) => {
 
 // Login page
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'login.html'));
+  res.sendFile(STATIC_FILES['login.html']);
 });
 
 // Login API
@@ -180,7 +216,7 @@ app.post('/api/logout', (req, res) => {
 
 // Admin page (protected)
 app.get('/admin', requireAuth, (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+  res.sendFile(STATIC_FILES['admin.html']);
 });
 
 // Get file info
@@ -194,7 +230,7 @@ app.get('/api/info/:id', (req, res) => {
 
   if (Date.now() > metadata.expiresAt) {
     files.delete(id);
-    saveMetadata(files);
+    saveMetadata();
     return res.status(404).json({ error: 'File expired' });
   }
 
@@ -239,11 +275,9 @@ app.delete('/api/admin/delete/:id', requireAuth, (req, res) => {
   
   try {
     const filePath = path.join(UPLOAD_DIR, metadata.filename);
-    if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
-    }
+    fs.unlink(filePath, () => {}); // async fire-and-forget
     files.delete(id);
-    saveMetadata(files);
+    saveMetadata();
     res.json({ success: true });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -261,11 +295,9 @@ app.delete('/delete/:id', (req, res) => {
   
   try {
     const filePath = path.join(UPLOAD_DIR, metadata.filename);
-    if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
-    }
+    fs.unlink(filePath, () => {}); // async fire-and-forget
     files.delete(id);
-    saveMetadata(files);
+    saveMetadata();
     res.json({ success: true });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -279,31 +311,36 @@ app.post('/upload', upload.single('file'), (req, res) => {
     const ext = path.extname(req.file.originalname);
     const filename = id + ext;
 
-    // Rename the file to use nanoid
+    // Rename the file to use nanoid (async)
     const oldPath = req.file.path;
     const newPath = path.join(UPLOAD_DIR, filename);
-    fs.renameSync(oldPath, newPath);
+    
+    fs.rename(oldPath, newPath, (err) => {
+      if (err) {
+        return res.status(500).json({ success: false, message: err.message });
+      }
 
-    const expiresAt = Date.now() + EXPIRY_MS;
+      const expiresAt = Date.now() + EXPIRY_MS;
 
-    // Store metadata
-    files.set(id, {
-      id: id,
-      filename: filename,
-      originalName: req.file.originalname,
-      mimetype: req.file.mimetype,
-      size: req.file.size,
-      uploadedAt: Date.now(),
-      expiresAt: expiresAt
-    });
+      // Store metadata
+      files.set(id, {
+        id: id,
+        filename: filename,
+        originalName: req.file.originalname,
+        mimetype: req.file.mimetype,
+        size: req.file.size,
+        uploadedAt: Date.now(),
+        expiresAt: expiresAt
+      });
 
-    saveMetadata(files);
+      saveMetadata();
 
-    res.json({
-      success: true,
-      id: id,
-      url: `${DOMAIN}/${id}`,
-      expiresAt: new Date(expiresAt).toISOString()
+      res.json({
+        success: true,
+        id: id,
+        url: `${DOMAIN}/${id}`,
+        expiresAt: new Date(expiresAt).toISOString()
+      });
     });
   } catch (error) {
     res.status(500).json({
@@ -320,29 +357,33 @@ app.post('/upload/text', express.text({ limit: '1MB' }), (req, res) => {
     const filename = id + '.txt';
     const filePath = path.join(UPLOAD_DIR, filename);
 
-    fs.writeFileSync(filePath, req.body, 'utf-8');
+    fs.writeFile(filePath, req.body, 'utf-8', (err) => {
+      if (err) {
+        return res.status(500).json({ success: false, message: err.message });
+      }
 
-    const expiresAt = Date.now() + EXPIRY_MS;
+      const expiresAt = Date.now() + EXPIRY_MS;
 
-    // Store metadata
-    files.set(id, {
-      id: id,
-      filename: filename,
-      originalName: 'text.txt',
-      mimetype: 'text/plain',
-      size: req.body.length,
-      uploadedAt: Date.now(),
-      expiresAt: expiresAt,
-      isText: true
-    });
+      // Store metadata
+      files.set(id, {
+        id: id,
+        filename: filename,
+        originalName: 'text.txt',
+        mimetype: 'text/plain',
+        size: req.body.length,
+        uploadedAt: Date.now(),
+        expiresAt: expiresAt,
+        isText: true
+      });
 
-    saveMetadata(files);
+      saveMetadata();
 
-    res.json({
-      success: true,
-      id: id,
-      url: `${DOMAIN}/${id}`,
-      expiresAt: new Date(expiresAt).toISOString()
+      res.json({
+        success: true,
+        id: id,
+        url: `${DOMAIN}/${id}`,
+        expiresAt: new Date(expiresAt).toISOString()
+      });
     });
   } catch (error) {
     res.status(500).json({
@@ -363,17 +404,11 @@ app.get('/api/text/:id', (req, res) => {
 
   if (Date.now() > metadata.expiresAt) {
     files.delete(id);
-    saveMetadata(files);
+    saveMetadata();
     return res.status(404).json({ error: 'File expired' });
   }
 
   const filePath = path.join(UPLOAD_DIR, metadata.filename);
-
-  if (!fs.existsSync(filePath)) {
-    return res.status(404).json({ error: 'File not found' });
-  }
-
-  // Read and send text content
   res.type('text/plain').sendFile(filePath);
 });
 
@@ -385,25 +420,19 @@ app.get('/:id', (req, res) => {
   // Clean up expired files
   if (metadata && Date.now() > metadata.expiresAt) {
     files.delete(id);
-    saveMetadata(files);
-    try {
-      const filePath = path.join(UPLOAD_DIR, metadata.filename);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      }
-    } catch (error) {
-      console.error('Error deleting expired file:', error);
-    }
-    return res.sendFile(path.join(__dirname, 'public', '404.html'));
+    saveMetadata();
+    fs.unlink(path.join(UPLOAD_DIR, metadata.filename), () => {});
+    return res.sendFile(STATIC_FILES['404.html']);
   }
 
-  // Check if file exists
-  if (!metadata || !fs.existsSync(path.join(UPLOAD_DIR, metadata.filename))) {
-    return res.sendFile(path.join(__dirname, 'public', '404.html'));
+  // Check if file exists in metadata
+  if (!metadata) {
+    return res.sendFile(STATIC_FILES['404.html']);
   }
 
-  // Serve view.html instead of file
-  res.sendFile(path.join(__dirname, 'public', 'view.html'));
+  // Serve view.html (skip fs.existsSync — metadata is source of truth; 
+  // if file is missing, /api/file/:id will 404 gracefully)
+  res.sendFile(STATIC_FILES['view.html']);
 });
 
 // Direct file download endpoint
@@ -417,26 +446,19 @@ app.get('/download/:id', (req, res) => {
 
   if (Date.now() > metadata.expiresAt) {
     files.delete(id);
-    saveMetadata(files);
-    try {
-      const filePath = path.join(UPLOAD_DIR, metadata.filename);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      }
-    } catch (error) {
-      console.error('Error deleting expired file:', error);
-    }
+    saveMetadata();
+    fs.unlink(path.join(UPLOAD_DIR, metadata.filename), () => {});
     return res.status(404).json({ error: 'File expired' });
   }
 
   const filePath = path.join(UPLOAD_DIR, metadata.filename);
-
-  if (!fs.existsSync(filePath)) {
-    return res.status(404).json({ error: 'File not found' });
-  }
-
-  // Serve the file as download
-  res.download(filePath, metadata.originalName);
+  res.download(filePath, metadata.originalName, (err) => {
+    if (err) {
+      if (!res.headersSent) {
+        res.status(404).json({ error: 'File not found' });
+      }
+    }
+  });
 });
 
 // File content endpoint for view page
@@ -450,50 +472,44 @@ app.get('/api/file/:id', (req, res) => {
 
   if (Date.now() > metadata.expiresAt) {
     files.delete(id);
-    saveMetadata(files);
-    try {
-      const filePath = path.join(UPLOAD_DIR, metadata.filename);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      }
-    } catch (error) {
-      console.error('Error deleting expired file:', error);
-    }
+    saveMetadata();
+    fs.unlink(path.join(UPLOAD_DIR, metadata.filename), () => {});
     return res.status(404).json({ error: 'File expired' });
   }
 
   const filePath = path.join(UPLOAD_DIR, metadata.filename);
-
-  if (!fs.existsSync(filePath)) {
-    return res.status(404).json({ error: 'File not found' });
-  }
-
-  // Serve the file inline (for images in view.html)
   res.sendFile(filePath, {
     headers: {
       'Content-Type': metadata.mimetype,
       'Content-Disposition': `inline; filename="${metadata.originalName}"`
     }
+  }, (err) => {
+    if (err && !res.headersSent) {
+      res.status(404).json({ error: 'File not found' });
+    }
   });
 });
 
+// ── Start server ────────────────────────────────────────
 
-
-// Start server
-app.listen(PORT, '0.0.0.0', () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`🔥 Read & Burn server running on port ${PORT}`);
   console.log(`📁 Upload directory: ${UPLOAD_DIR}`);
   console.log(`🌐 Domain: ${DOMAIN}`);
   cleanupExpiredFiles();
 });
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received. Shutting down gracefully...');
-  process.exit(0);
-});
+// Tune HTTP keep-alive for faster repeated requests
+server.keepAliveTimeout = 30_000;     // 30s keep-alive
+server.headersTimeout = 35_000;       // 5s grace after keepAlive
+server.requestTimeout = 60_000;       // max request time
 
-process.on('SIGINT', () => {
-  console.log('SIGINT received. Shutting down gracefully...');
+// Graceful shutdown
+function shutdown() {
+  console.log('Shutting down gracefully...');
+  saveMetadataSync(); // save synchronously on shutdown
   process.exit(0);
-});
+}
+
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
