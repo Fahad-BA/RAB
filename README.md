@@ -1,9 +1,7 @@
 # 🔥 Read & Burn
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-14+-green.svg)](https://nodejs.org/)
 [![Express](https://img.shields.io/badge/Express-4.18+-brightgreen.svg)](https://expressjs.com/)
-[![Vibe-coded](https://img.shields.io/badge/Vibe--coded-purple.svg)](https://github.com/openclaw)
 [![Self-hosted](https://img.shields.io/badge/Self--hosted-orange.svg)](https://github.com)
 [![Privacy](https://img.shields.io/badge/Privacy--First-critical.svg)](https://github.com)
 
@@ -79,7 +77,6 @@ No hidden expiration. Complete visibility.
 - **Minimal dependencies** - Only what's needed
 - **Clean codebase** - Easy to audit and extend
 - **Zero-config deployment** - Works out of the box
-- **Docker-ready** - Containerized for any environment
 - **Systemd integration** - Production-grade service management
 
 ---
@@ -158,7 +155,6 @@ Test content rendering, UI designs, or technical implementations without creatin
 
 - Systemd service integration
 - Nginx reverse proxy ready
-- Docker containerization
 - Environment-based configuration
 - Graceful shutdown handling
 
@@ -193,13 +189,14 @@ That's it. The service runs on `http://localhost:4002`.
 
 ### Production Deployment
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for comprehensive deployment guides including:
+The project includes `rab-service.service` (systemd) and `rab.fhidan.com.nginx` (Nginx config) for production deployment.
 
-- Systemd configuration
-- Nginx setup
-- Docker deployment
-- Environment variables
-- Security hardening
+Key environment variables:
+- `PORT` - Server port (default: 4002)
+- `DOMAIN` - Public domain URL
+- `ADMIN_PASSWORD` - Admin panel password
+
+Set up with systemd and Nginx reverse proxy for production use.
 
 ---
 
@@ -212,22 +209,14 @@ We believe in open innovation. Join us in building the future of ephemeral file 
 - Submit pull requests
 - Share your use cases
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
 ---
-
-## 📜 License
-
-MIT License - See [LICENSE](LICENSE) for details.
 
 ---
 
 ## 🌐 Links
 
 - **Live Demo:** [🔥 Read and Burn](https://rab.fhidan.com)
-- **Documentation:** [README.md](README.md)
-- **Deployment:** [DEPLOYMENT.md](DEPLOYMENT.md)
-- **Contributing:** [CONTRIBUTING.md](CONTRIBUTING.md)
+- **Repository:** [GitHub](https://github.com/Fahad-BA/RAB)
 
 ---
 
