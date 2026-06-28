@@ -129,7 +129,7 @@ Test content rendering, UI designs, or technical implementations without creatin
 - **ID Format:** 7 alphanumeric characters
 - **Cleanup Interval:** Every 5 minutes
 - **Supported Types:** All files + plain text
-- **Deployment:** Linux/Unix/Docker
+- **Deployment:** Linux/Unix (systemd)
 
 ---
 
@@ -194,7 +194,10 @@ The project includes `rab-service.service` (systemd) and `rab.fhidan.com.nginx` 
 Key environment variables:
 - `PORT` - Server port (default: 4002)
 - `DOMAIN` - Public domain URL
+- `ADMIN_USERNAME` - Admin panel username
 - `ADMIN_PASSWORD` - Admin panel password
+- `ADMIN_SECRET` - Admin session secret
+- `NODE_ENV` - Set to `production` for secure cookies
 
 Set up with systemd and Nginx reverse proxy for production use.
 
