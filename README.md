@@ -1,228 +1,104 @@
 # 🔥 Read & Burn
 
-[![Node.js](https://img.shields.io/badge/Node.js-14+-green.svg)](https://nodejs.org/)
-[![Express](https://img.shields.io/badge/Express-4.18+-brightgreen.svg)](https://expressjs.com/)
-[![Self-hosted](https://img.shields.io/badge/Self--hosted-orange.svg)](https://github.com)
-[![Privacy](https://img.shields.io/badge/Privacy--First-critical.svg)](https://github.com)
+![Node.js](https://img.shields.io/badge/Node.js-18+-339933?logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express-4.18-000000?logo=express&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Self-Hosted](https://img.shields.io/badge/Self--Hosted-✓-orange)
+![PWA](https://img.shields.io/badge/PWA-✓-5A0FC8?logo=pwa&logoColor=white)
 
-> **Revolutionary temporary file sharing that self-destructs.**
-> 
-> Secure by design. Privacy first. Zero footprint.
+A self-hosted, self-destructing file and text sharing service. Every uploaded file **expires after 1 hour** — deleted from disk and purged from metadata. No retention, no backups, no traces.
 
----
+Live at **[rab.fhidan.com](https://rab.fhidan.com)**
 
-## 🚀 The Vision
+## ✨ Features
 
-In a world where every share leaves a permanent digital footprint, **Read & Burn** introduces a paradigm shift in how we think about information sharing. 
+- ⏱️ **Auto-expiring uploads** — Files self-destruct after 60 minutes
+- 📁 **File & text uploads** — Share any file (up to 10 MB) or plain text snippets
+- 🖼️ **Image preview** — Inline rendering for image files
+- 🔐 **Admin dashboard** — Protected panel to monitor and manage active uploads
+- 🔥 **Instant burn** — Users can destroy their own uploads at any time
+- ⚡ **Performance-tuned** — Gzip compression, debounced metadata writes, HTTP keep-alive
+- 📱 **PWA-ready** — Includes manifest, service worker, and responsive UI
+- 🏠 **Self-hosted** — Runs on your own server with Nginx + systemd
 
-This isn't just another file upload service—it's a **privacy-first architecture** that ensures your shared content exists only when it needs to exist, then vanishes without a trace.
+## 🛠 Tech Stack
 
-### What Makes It Revolutionary?
+| Layer        | Technology                |
+|--------------|---------------------------|
+| Runtime      | Node.js 18+               |
+| Framework    | Express 4.18              |
+| Upload       | Multer (disk storage)     |
+| IDs          | Nanoid (4-char short IDs) |
+| Auth         | Cookie-based sessions     |
+| Compression  | compression (gzip)        |
+| Frontend     | Vanilla HTML/CSS/JS (PWA) |
+| Deployment   | Nginx + systemd           |
 
-**Traditional file sharing:** Files live forever on cloud servers. Privacy policies change. Data gets breached. You lose control.
-
-**Read & Burn:** Files have a one-hour life cycle. After 60 minutes, they don't just become inaccessible—they're *gone*. Complete self-destruction. No backups. No retention. No traces.
-
-This is **ephemeral storage as a service (EaaS)**—a concept that reimagines data security through temporary existence rather than permanent storage.
-
----
-
-## 💡 Core Innovation
-
-### The "Burn" Concept
-
-Every upload automatically enters a one-hour countdown. When time expires:
-
-✅ Files are deleted from disk  
-✅ Metadata is purged from database  
-✅ All traces are eliminated  
-✅ Zero recovery possible  
-
-### User-Controlled Deletion
-
-Users don't need to wait. The "Burn Page" button provides instant self-destruction, giving users absolute control over their shared content.
-
-### Live Transparency
-
-Every file view includes:
-- Real-time countdown timer with progress bar
-- Exact time remaining to destruction
-- Visual representation of content life cycle
-- Instant "Burn" capability
-
-No hidden expiration. Complete visibility.
-
----
-
-## 🌟 Modern Architecture
-
-### Built for Performance
-
-- **Express.js** backend - Lightning-fast response times
-- **Nanoid** - Short, URL-friendly 7-character IDs
-- **Cookie-based sessions** - Secure, stateless authentication
-- **Atomic file operations** - Prevents partial deletions
-- **Background cleanup** - Efficient resource management
-
-### Security First
-
-- **Protected Admin Panel** - Role-based access control
-- **Environment-based configuration** - No hardcoded credentials
-- **HTTP-only cookies** - Protection against XSS
-- **CSRF-ready architecture** - Prepared for additional security layers
-- **File validation** - Type and size limits enforced
-
-### Developer Experience
-
-- **Minimal dependencies** - Only what's needed
-- **Clean codebase** - Easy to audit and extend
-- **Zero-config deployment** - Works out of the box
-- **Systemd integration** - Production-grade service management
-
----
-
-## 🔮 Use Cases
-
-### Temporary Document Sharing
-Share confidential documents with a timed window. Once read (or expired), the content vanishes.
-
-### Secure Team Collaboration
-Collaborate on sensitive projects without permanent storage. Files exist only during the active collaboration window.
-
-### One-Time Passwords & Secrets
-Share temporary credentials, API keys, or sensitive information that should self-destruct after use.
-
-### Privacy-Focused Communication
-Share screenshots, error logs, or debug information that doesn't need to persist.
-
-### Ephemeral Content Testing
-Test content rendering, UI designs, or technical implementations without creating permanent artifacts.
-
----
-
-## 🏗️ Technical Superiority
-
-### Compared to Traditional File Sharing
-
-| Feature | Traditional Services | Read & Burn |
-|---------|---------------------|-------------|
-| File Persistence | Forever | 1 hour max |
-| User Control | Limited | Complete (burn anytime) |
-| Privacy | Data retention policies | Zero retention |
-| Transparancy | Hidden expiration | Live countdown |
-| Cost | Subscriptions | Free & open source |
-| Deployment | Cloud-only | Self-hosted |
-
-### Why This Matters
-
-- **GDPR Compliance** - No data retention beyond user intent
-- **Security Audit** - Reduced attack surface (no permanent storage)
-- **Cost Efficiency** - No storage costs for temporary data
-- **User Trust** - Complete transparency about data lifecycle
-
----
-
-## 📊 Key Metrics
-
-- **File Lifetime:** 60 minutes (configurable)
-- **Max File Size:** 10 MB
-- **ID Format:** 7 alphanumeric characters
-- **Cleanup Interval:** Every 5 minutes
-- **Supported Types:** All files + plain text
-- **Deployment:** Linux/Unix (systemd)
-
----
-
-## 🔒 Enterprise-Ready Features
-
-### Admin Dashboard
-
-- Real-time file monitoring
-- Manual file management
-- Upload statistics and analytics
-- Multi-file deletion
-- User activity tracking
-
-### API Integration
-
-- RESTful endpoints for automation
-- Programmatic file creation
-- Metadata querying
-- Status monitoring
-- Webhook-ready architecture
-
-### Production Deployment
-
-- Systemd service integration
-- Nginx reverse proxy ready
-- Environment-based configuration
-- Graceful shutdown handling
-
----
-
-## 🎯 The Philosophy
-
-**Privacy through Ephemeral Existence**
-
-In an era of permanent digital storage, we believe in the right to forget. Files don't need to live forever. Information doesn't need to accumulate. Sharing doesn't need to leave traces.
-
-**Read & Burn** isn't just a file upload service—it's a statement about digital privacy. A declaration that your data deserves to exist only as long as it's useful.
-
-When you upload, you control. When you share, you decide. When time is up, it's gone.
-
-No retention. No regret. No traces.
-
----
-
-## 🛠️ Getting Started
-
-### Quick Start
+## 📦 Installation
 
 ```bash
-git clone <repository-url>
-cd rab-service
+git clone https://github.com/Fahad-BA/RAB.git
+cd RAB
 npm install
 npm start
 ```
 
-That's it. The service runs on `http://localhost:4002`.
+The server runs on `http://localhost:4002`.
 
-### Production Deployment
+## ⚙️ Configuration
 
-The project includes `rab-service.service` (systemd) and `rab.fhidan.com.nginx` (Nginx config) for production deployment.
+All configuration is via environment variables (defaults shown):
 
-Key environment variables:
-- `PORT` - Server port (default: 4002)
-- `DOMAIN` - Public domain URL
-- `ADMIN_USERNAME` - Admin panel username
-- `ADMIN_PASSWORD` - Admin panel password
-- `ADMIN_SECRET` - Admin session secret
-- `NODE_ENV` - Set to `production` for secure cookies
+```env
+PORT=4002
+DOMAIN=https://rab.fhidan.com
+ADMIN_USERNAME=Fahad
+ADMIN_PASSWORD=your_password_here
+ADMIN_SECRET=your_session_secret
+NODE_ENV=production        # enables secure cookies
+```
 
-Set up with systemd and Nginx reverse proxy for production use.
+## 🚀 Production Deployment
 
----
+### systemd
 
-## 🤝 Contributing
+Copy `rab-service.service` to `/etc/systemd/system/` and edit the environment variables. Then:
 
-We believe in open innovation. Join us in building the future of ephemeral file sharing:
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable rab-service
+sudo systemctl start rab-service
+```
 
-- Fork the repository
-- Create feature branches
-- Submit pull requests
-- Share your use cases
+### Nginx Reverse Proxy
 
----
+Use the included `rab.fhidan.com.nginx` as a template:
 
----
+```bash
+sudo cp rab.fhidan.com.nginx /etc/nginx/sites-available/rab.fhidan.com
+sudo ln -s /etc/nginx/sites-available/rab.fhidan.com /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
+```
 
-## 🌐 Links
+## 📡 API Endpoints
 
-- **Live Demo:** [🔥 Read and Burn](https://rab.fhidan.com)
-- **Repository:** [GitHub](https://github.com/Fahad-BA/RAB)
+| Method | Endpoint                | Description                        |
+|--------|-------------------------|------------------------------------|
+| POST   | `/upload`               | Upload a file (multipart/form)     |
+| POST   | `/upload/text`          | Upload a text snippet              |
+| GET    | `/:id`                  | View page for a file               |
+| GET    | `/download/:id`         | Download the original file         |
+| GET    | `/api/info/:id`         | File metadata as JSON              |
+| GET    | `/api/file/:id`         | Raw file content                   |
+| GET    | `/api/text/:id`         | Plain text content                 |
+| DELETE | `/delete/:id`           | Burn (delete) a file               |
+| POST   | `/api/login`            | Admin login                        |
+| POST   | `/api/logout`           | Admin logout                       |
+| GET    | `/admin`                | Admin dashboard (protected)        |
+| GET    | `/api/admin/uploads`    | List all active uploads (protected)|
+| DELETE | `/api/admin/delete/:id` | Admin delete a file (protected)    |
+| GET    | `/health`               | Health check                       |
 
----
+## 📄 License
 
-> *"The only files worth keeping are the ones you choose to keep. Everything else should burn."*
-
-> — Read & Burn Philosophy
+This project is licensed under the MIT License.
