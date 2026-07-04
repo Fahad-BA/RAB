@@ -29,6 +29,7 @@ Live at **[rab.fhidan.com](https://rab.fhidan.com)**
 | Framework    | Express 4.18              |
 | Upload       | Multer (disk storage)     |
 | IDs          | Nanoid (4-char short IDs) |
+| Env loading  | dotenv                    |
 | Auth         | Cookie-based sessions     |
 | Compression  | compression (gzip)        |
 | Frontend     | Vanilla HTML/CSS/JS (PWA) |
@@ -40,6 +41,7 @@ Live at **[rab.fhidan.com](https://rab.fhidan.com)**
 git clone https://github.com/Fahad-BA/RAB.git
 cd RAB
 npm install
+cp .env.example .env  # then edit .env with your values
 npm start
 ```
 
@@ -47,7 +49,7 @@ The server runs on `http://localhost:4002`.
 
 ## ⚙️ Configuration
 
-All configuration is via environment variables (defaults shown):
+All configuration is via environment variables (all **required** — the server exits if any are missing):
 
 ```env
 PORT=4002
@@ -92,6 +94,7 @@ sudo nginx -t && sudo systemctl reload nginx
 | GET    | `/api/file/:id`         | Raw file content                   |
 | GET    | `/api/text/:id`         | Plain text content                 |
 | DELETE | `/delete/:id`           | Burn (delete) a file               |
+| GET    | `/login`                | Login page (HTML)                  |
 | POST   | `/api/login`            | Admin login                        |
 | POST   | `/api/logout`           | Admin logout                       |
 | GET    | `/admin`                | Admin dashboard (protected)        |
