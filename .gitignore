@@ -40,7 +40,3 @@ Thumbs.db
 *.bak
 *.bak2
 *.bak3
-
-# Systemd
-*.service
-metadata.json
