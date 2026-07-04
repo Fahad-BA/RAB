@@ -8,13 +8,14 @@ const { nanoid } = require('nanoid');
 const cookieParser = require('cookie-parser');
 
 const app = express();
-const PORT = process.env.PORT || 4002;
+require('dotenv').config()
+const PORT = process.env.PORT;
 
 // Constants
 const UPLOAD_DIR = path.join(__dirname, 'uploads');
 const METADATA_FILE = path.join(__dirname, 'metadata.json');
 const PUBLIC_DIR = path.join(__dirname, 'public');
-const DOMAIN = process.env.DOMAIN || 'https://rab.fhidan.com';
+const DOMAIN = process.env.DOMAIN;
 const EXPIRY_MS = 60 * 60 * 1000; // 1 hour
 
 // Pre-compute static file paths (avoids path.join on every request)
@@ -71,9 +72,14 @@ function saveMetadataSync() {
 const files = loadMetadata();
 
 // Admin credentials
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'Fahad';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'PASSWORD_REMOVED';
-const ADMIN_SECRET = process.env.ADMIN_SECRET || 'SECRET_REMOVED';
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+const ADMIN_SECRET = process.env.ADMIN_SECRET;
+
+if (!PORT || !DOMAIN || !ADMIN_USERNAME || !ADMIN_PASSWORD || !ADMIN_SECRET) {
+  console.error('Missing required env vars. Check .env file.');
+  process.exit(1);
+}
 
 // Simple session storage (in production, use proper session store)
 const sessions = new Map();
