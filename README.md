@@ -47,7 +47,9 @@ The server runs on `http://localhost:4002`.
 
 ## ⚙️ Configuration
 
-All configuration is via environment variables (defaults shown):
+### Required
+
+The server validates these at startup and exits if any are missing:
 
 ```env
 PORT=4002
@@ -55,7 +57,12 @@ DOMAIN=https://rab.fhidan.com
 ADMIN_USERNAME=Fahad
 ADMIN_PASSWORD=your_password_here
 ADMIN_SECRET=your_session_secret
-NODE_ENV=production        # enables secure cookies
+```
+
+### Optional
+
+```env
+NODE_ENV=production        # enables secure cookies (defaults to development when unset)
 ```
 
 ## 🚀 Production Deployment
