@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>RAB 🔒</title>
+<meta name="theme-color" content="#090a0d"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#090a0d;color:#e2e4e8;font-family:'Segoe UI',Tahoma,sans-serif;padding:20px}
+.card{width:100%;max-width:360px;background:#111319;border:1px solid #292d36;border-radius:14px;padding:32px 26px;text-align:center}
+.icon{font-size:40px;margin-bottom:10px}
+h1{font-size:20px;margin-bottom:6px;color:#fff}
+p{font-size:13px;color:#818793;margin-bottom:22px}
+input{width:100%;padding:14px;font-size:20px;text-align:center;letter-spacing:8px;background:#0a0b0e;border:1px solid #30343d;border-radius:9px;color:#fff;outline:0;direction:ltr}
+input:focus{border-color:#00f2fe}
+button{width:100%;margin-top:14px;padding:14px;font-size:15px;font-weight:bold;background:#fe0979;color:#fff;border:0;border-radius:9px;cursor:pointer}
+button:hover{filter:brightness(1.1)}
+.err{color:#fe0979;font-size:13px;margin-top:12px;min-height:18px}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="icon">🔥</div>
+  <h1>Read &amp; Burn</h1>
+  <p>هذه الخدمة خاصة. أدخل رمز الدخول للمتابعة.</p>
+  <form id="f">
+    <input id="code" type="password" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="••••" autofocus/>
+    <button type="submit">دخول</button>
+    <div class="err" id="err"></div>
+  </form>
+</div>
+<script>
+document.getElementById('f').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const code = document.getElementById('code').value.trim();
+  const err = document.getElementById('err');
+  err.textContent = '';
+  try {
+    const r = await fetch('/api/access', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code })
+    });
+    if (r.ok) { location.reload(); return; }
+    if (r.status === 429) { err.textContent = 'محاولات كثيرة، انتظر قليلاً'; return; }
+    err.textContent = 'الرمز غير صحيح';
+    document.getElementById('code').select();
+  } catch {
+    err.textContent = 'خطأ في الاتصال';
+  }
+});
+</script>
+</body>
+</html>

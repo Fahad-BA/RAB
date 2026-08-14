@@ -4,6 +4,7 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto');
 const { nanoid } = require('nanoid');
 const cookieParser = require('cookie-parser');
 
@@ -96,6 +97,62 @@ app.use('/delete', cors());
 
 app.use(express.json());
 app.use(cookieParser());
+
+// ── Access gate (site-wide) ─────────────────────────────
+// Protects the entire service behind a secret access code.
+const ACCESS_CODE = process.env.ACCESS_CODE || '2135';
+const GATE_COOKIE = 'rab_gate';
+const GATE_MAX_AGE = 30 * 24 * 60 * 60 * 1000; // 30 days
+const gateToken = crypto.createHash('sha256').update(`${ACCESS_CODE}|${ADMIN_SECRET}`).digest('hex');
+const GATE_HTML = path.join(PUBLIC_DIR, 'gate.html');
+const GATE_EXEMPT = new Set(['/gate', '/api/access', '/health']);
+
+// Rate limit: 10 failed attempts per IP per 10 minutes
+const gateFails = new Map();
+function isRateLimited(ip) {
+  const entry = gateFails.get(ip);
+  return entry && entry.count >= 10 && Date.now() - entry.last < 10 * 60 * 1000;
+}
+function recordFail(ip) {
+  const entry = gateFails.get(ip) || { count: 0, last: 0 };
+  entry.count += 1;
+  entry.last = Date.now();
+  gateFails.set(ip, entry);
+  if (gateFails.size > 1000) gateFails.clear(); // bound memory
+}
+
+function requireGate(req, res, next) {
+  if (GATE_EXEMPT.has(req.path)) return next();
+  if (req.cookies[GATE_COOKIE] === gateToken) return next();
+  if (req.method !== 'GET') return res.status(401).json({ success: false, message: 'Access code required' });
+  if (req.path.startsWith('/api/')) return res.status(401).json({ success: false, message: 'Access code required' });
+  return res.sendFile(GATE_HTML);
+}
+app.use(requireGate);
+
+app.get('/gate', (req, res) => res.sendFile(GATE_HTML));
+
+app.post('/api/access', (req, res) => {
+  const ip = req.ip || 'unknown';
+  if (isRateLimited(ip)) return res.status(429).json({ success: false, message: 'Too many attempts' });
+  const submitted = String(req.body?.code || '');
+  const expected = Buffer.from(ACCESS_CODE);
+  const given = Buffer.from(submitted);
+  const match = given.length === expected.length && crypto.timingSafeEqual(given, expected);
+  if (!match) {
+    recordFail(ip);
+    return res.status(401).json({ success: false, message: 'Wrong code' });
+  }
+  gateFails.delete(ip);
+  res.cookie(GATE_COOKIE, gateToken, {
+    httpOnly: true,
+    maxAge: GATE_MAX_AGE,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax'
+  });
+  res.json({ success: true });
+});
+// ── End access gate ──────────────────────────────────────
 
 // Static files with caching headers
 app.use(express.static(PUBLIC_DIR, {
