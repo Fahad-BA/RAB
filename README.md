@@ -15,6 +15,7 @@ Live at **[rab.fhidan.com](https://rab.fhidan.com)**
 - ⏱️ **Auto-expiring uploads** — Files self-destruct after 60 minutes
 - 📁 **File & text uploads** — Share any file (up to 10 MB) or plain text snippets
 - 🖼️ **Image preview** — Inline rendering for image files
+- 🔐 **Site-wide access gate** — Whole service protected behind a secret access code (rate-limited, 30-day cookie)
 - 🔐 **Admin dashboard** — Protected panel to monitor and manage active uploads
 - 🔥 **Instant burn** — Users can destroy their own uploads at any time
 - ⚡ **Performance-tuned** — Gzip compression, debounced metadata writes, HTTP keep-alive
@@ -63,7 +64,12 @@ ADMIN_SECRET=your_session_secret
 
 ```env
 NODE_ENV=production        # enables secure cookies (defaults to development when unset)
+ACCESS_CODE=your_code       # site-wide access gate code (defaults to '2135' when unset)
 ```
+
+When `ACCESS_CODE` is set, all pages require the code once; a signed, HTTP-only cookie
+(`rab_gate`, valid 30 days) grants access afterwards. Failed attempts are rate-limited
+(10 per IP per 10 minutes).
 
 ## 🚀 Production Deployment
 
@@ -104,6 +110,8 @@ sudo nginx -t && sudo systemctl reload nginx
 | GET    | `/admin`                | Admin dashboard (protected)        |
 | GET    | `/api/admin/uploads`    | List all active uploads (protected)|
 | DELETE | `/api/admin/delete/:id` | Admin delete a file (protected)    |
+| GET    | `/gate`                 | Access-gate code entry page        |
+| POST   | `/api/access`           | Submit access code, set gate cookie|
 | GET    | `/health`               | Health check                       |
 
 ## 📄 License
